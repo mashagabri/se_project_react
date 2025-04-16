@@ -1,0 +1,83 @@
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #0000004d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.modal__opened {
+  display: flex;
+}
+
+.modal__container {
+  position: relative;
+  background-color: white;
+  padding: 28px 28px 36px;
+
+  box-sizing: border-box;
+  /* margin: auto; */
+}
+
+.modal__container_with-form {
+  max-width: 496px;
+  max-height: 436px;
+}
+.modal__form {
+  display: flex;
+  flex-direction: column;
+}
+.modal__title {
+  margin: 0;
+}
+
+.modal__sumbit {
+  background-color: black;
+  color: white;
+}
+
+.modal__sumbit:not(.modal__sumbit_disabled):hover {
+  opacity: 0.6;
+}
+
+.modal__sumbit_disabled {
+  opacity: 0.3;
+}
+.modal__close {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+}
+.modal__label {
+}
+.modal__input {
+  display: block;
+}
+.modal__radio-buttons {
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.modal__legend {
+}
+.modal__label_type_radio {
+}
+.modal__radio-input {
+}
+
+.error-input {
+  font-family: "Cabinet Grotesk Regular";
+  color: #ff4d00;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+}

@@ -1,3 +1,37 @@
 .header {
   display: flex;
+  align-items: center;
+  padding: 32px 0 28px;
+  font-family: "Cabinet Grotesk Regular";
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+}
+
+.header__logo {
+  margin-right: 24px;
+}
+
+.header__date-location {
+  margin: 0;
+}
+
+.header__add-clothes-btn {
+  all: unset;
+
+  margin: 0 20px 0 auto;
+}
+
+.header__user-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header__username {
+  margin: 0;
+}
+
+.header__avatar {
 }

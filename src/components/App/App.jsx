@@ -31,6 +31,12 @@ function App() {
     setActiveModal("");
   }
 
+  function setDataInput(input) {
+    if (input.value) {
+      enableSendButton();
+    }
+  }
+
   const handleCardClick = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
@@ -41,16 +47,38 @@ function App() {
   };
 
   useEffect(() => {
-    getWeather(coordinates, APIkey).then((weatherData) => {
-      setWeatherData(weatherData);
-    });
+    getWeather(coordinates, APIkey)
+      .then((weatherData) => {
+        setWeatherData(weatherData);
+      })
+      .catch((err) => {
+        console.log("Problem with weather api: " + err);
+      });
   }, []);
 
-  function setDataInput(input) {
-    if (input.value) {
-      enableSendButton();
+  useEffect(() => {
+    if (!activeModal) {
+      return;
     }
-  }
+    function catchEscape(e) {
+      if (e.key === "Escape") {
+        closeActiveModal();
+      }
+    }
+
+    function clickOutside(e) {
+      if (e.target.classList.contains("modal")) {
+        closeActiveModal();
+      }
+    }
+
+    document.addEventListener("mousedown", clickOutside);
+    document.addEventListener("keydown", catchEscape);
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+      document.removeEventListener("keydown", catchEscape);
+    };
+  }, [activeModal, closeActiveModal]);
 
   return (
     <div className="page">
@@ -58,14 +86,14 @@ function App() {
         <Header handleAddClick={handleAddClick} weatherData={weatherData} />
         <Main weatherData={weatherData} handleCardClick={handleCardClick} />
         <ItemModal
-          active={activeModal === "preview"}
+          isOpen={activeModal === "preview"}
           card={selectedCard}
           onClose={closeActiveModal}
         />
         <ModalWithForm
           title="New garment"
           buttonText="Add garment"
-          activeModal={activeModal}
+          isOpen={activeModal === "add-garment"}
           activeSendButton={activeSendButton}
           onClose={closeActiveModal}
           handleCardClick={handleCardClick}
@@ -108,7 +136,7 @@ function App() {
                 type="radio"
                 defaultChecked
               />
-              Hot
+              <span className="modal__radio-text">Hot</span>
             </label>
             <label
               className="modal__label modal__label_type_radio"
@@ -121,7 +149,7 @@ function App() {
                 className="modal__radio-input"
                 type="radio"
               />
-              Warm
+              <span className="modal__radio-text">Warm</span>
             </label>
             <label
               className="modal__label modal__label_type_radio"
@@ -134,7 +162,7 @@ function App() {
                 className="modal__radio-input"
                 type="radio"
               />
-              Cold
+              <span className="modal__radio-text">Cold</span>
             </label>
           </fieldset>
         </ModalWithForm>

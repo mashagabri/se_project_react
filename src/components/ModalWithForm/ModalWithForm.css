@@ -13,34 +13,45 @@
   height: 100%;
 }
 
-.modal__opened {
+.modal_opened {
   display: flex;
-}
-
-.modal__container {
-  position: relative;
-  background-color: white;
-  padding: 28px 28px 36px;
-
-  box-sizing: border-box;
-  /* margin: auto; */
 }
 
 .modal__container_with-form {
-  max-width: 496px;
-  max-height: 436px;
+  width: 496px;
+  border-radius: 20px;
+  border: 1px solid #0000004d;
+  position: relative;
+  background-color: white;
+  padding: 28px 28px 36px;
+  box-sizing: border-box;
 }
+
 .modal__form {
   display: flex;
   flex-direction: column;
+
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
 }
+
 .modal__title {
   margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
 }
 
 .modal__sumbit {
   background-color: black;
   color: white;
+  margin-top: 32px;
+  border-radius: 4px;
+  height: 36px;
+  width: 124px;
 }
 
 .modal__sumbit:not(.modal__sumbit_disabled):hover {
@@ -50,27 +61,84 @@
 .modal__sumbit_disabled {
   opacity: 0.3;
 }
+
 .modal__close {
+  all: unset;
+  color: #0000004d;
   position: absolute;
   top: 20px;
   right: 28px;
 }
+
 .modal__label {
+  margin-top: 24px;
 }
+
 .modal__input {
+  all: unset;
   display: block;
+  border-bottom: 1px solid #000000;
+  width: 100%;
+  margin-top: 8px;
 }
+
+.modal__input::placeholder {
+  color: #00000080;
+}
+
 .modal__radio-buttons {
   border: none;
   padding: 0;
   display: flex;
   flex-direction: column;
+  margin-top: 24px;
 }
+
 .modal__legend {
 }
+
 .modal__label_type_radio {
+  margin-top: 8px;
 }
+
+.modal__label_type_radio:first-of-type {
+  margin-top: 12px;
+}
+
+.modal__radio-text {
+  margin-left: 8px;
+}
+
+.modal__radio-input:checked + span {
+  color: #000000;
+}
+
+.modal__radio-input:not(:checked) + span {
+  color: #00000080;
+}
+
 .modal__radio-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.modal__radio-input:checked:before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  border-radius: 50%;
 }
 
 .error-input {

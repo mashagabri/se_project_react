@@ -1,3 +1,33 @@
 .modal__container_item {
-  max-width: 670px;
+  max-width: 498px;
+  border-radius: 16px;
+  position: relative;
+  box-sizing: border-box;
+  background-color: white;
+  overflow: hidden;
+}
+
+.modal__container_item .modal__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-size: 14px;
+  color: white;
+}
+
+.modal__caption {
+  all: unset;
+  display: block;
+  margin-top: 20px;
+  margin-left: 32px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+}
+
+.modal__weather {
+  all: unset;
+  display: block;
+  margin: 12px 0 32px 32px;
 }

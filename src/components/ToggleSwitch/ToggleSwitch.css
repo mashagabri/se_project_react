@@ -1,0 +1,54 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.toggle-switch {
+  margin-left: auto;
+  width: 56px;
+  height: 28px;
+  border-radius: 28px;
+  border: 2px solid #7e7e7e;
+  display: flex;
+  position: relative;
+  background-color: white;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.toggle-switch::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  background-color: black;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.toggle-switch_c-active::before {
+  transform: translateX(28px);
+}
+
+.toggle-switch__element {
+  flex: 1;
+  height: 100%;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 28px;
+  z-index: 2;
+  color: #7e7e7e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+}
+
+.toggle-switch__element_active {
+  color: white;
+}

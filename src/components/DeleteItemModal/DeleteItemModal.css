@@ -1,0 +1,43 @@
+.modal__container_delete-item {
+  width: 670px;
+  height: 280px;
+  border-radius: 20px;
+  border: 1px solid #0000004d;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  text-align: center;
+  position: relative;
+}
+
+.modal__container_delete-item .modal__close {
+  all: unset;
+  color: #0000004d;
+  position: absolute;
+  top: 20px;
+  right: 28px;
+}
+
+.modal__header {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.modal__buttons {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.modal__confirmation {
+  color: #ff4d00;
+}
+
+.modal__button {
+  all: unset;
+}
+
+.modal__cancel {
+  margin-top: 24px;
+  margin-bottom: 60px;
+}

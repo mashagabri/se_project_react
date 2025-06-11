@@ -19,8 +19,8 @@
 
 .header__add-clothes-btn {
   all: unset;
-
-  margin: 0 20px 0 auto;
+  margin-left: auto;
+  margin-right: 20px;
 }
 
 .header__user-container {
@@ -31,6 +31,15 @@
 
 .header__username {
   margin: 0;
+}
+
+.header__link {
+  text-decoration: none;
+  color: black;
+}
+
+.header__link_bold {
+  font-weight: 900;
 }
 
 .header__avatar {

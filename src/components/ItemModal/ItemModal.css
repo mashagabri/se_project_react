@@ -3,8 +3,11 @@
   border-radius: 16px;
   position: relative;
   box-sizing: border-box;
-  background-color: white;
   overflow: hidden;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
 }
 
 .modal__container_item .modal__close {
@@ -15,19 +18,34 @@
   color: white;
 }
 
+.modal__footer {
+  display: flex;
+}
+
+.modal__left {
+  max-width: 498px;
+  flex: 1;
+}
+
 .modal__caption {
   all: unset;
   display: block;
   margin-top: 20px;
   margin-left: 32px;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 24px;
-  letter-spacing: 0%;
 }
 
 .modal__weather {
   all: unset;
   display: block;
   margin: 12px 0 32px 32px;
+}
+
+.modal__delete {
+  margin-right: 32px;
+  width: 101px;
+  color: #ff4d00;
+}
+
+.modal__delete:hover {
+  cursor: pointer;
 }

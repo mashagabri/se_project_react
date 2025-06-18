@@ -1,7 +1,28 @@
+.clothes-section {
+  width: 75%;
+  margin-top: 41px;
+}
+
+.clothes-section__header {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+}
+
 .clothes-section__cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 120px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   padding: 0;
   list-style: none;
+}
+
+.header__add-button {
+  color: #00000099;
+  margin-left: 20px;
+}
+
+.header__text {
+  display: inline;
+  font-size: 20px;
 }

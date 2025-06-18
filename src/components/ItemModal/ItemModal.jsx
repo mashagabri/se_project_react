@@ -1,11 +1,12 @@
 import "./ItemModal.css";
+import close from "../../assets/close.svg";
 
 function ItemModal({ card, onClose, isOpen, handleOpenFormDeleteItem }) {
   return (
     <div className={`modal${isOpen ? " modal_opened" : ""}`}>
       <div className="modal__container modal__container_item">
-        <button className="modal__close" onClick={onClose}>
-          X
+        <button className="modal__close button" onClick={onClose}>
+          <img src={close} alt="close" />
         </button>
         <img className="modal__image" src={card.link} alt={card.name} />
         <div className="modal__footer">

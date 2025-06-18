@@ -1,12 +1,22 @@
 .header {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   padding: 32px 0 28px;
   font-family: "Cabinet Grotesk Regular";
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
   letter-spacing: 0%;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
 }
 
 .header__logo {
@@ -19,14 +29,14 @@
 
 .header__add-clothes-btn {
   all: unset;
-  margin-left: auto;
-  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .header__user-container {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-left: 20px;
 }
 
 .header__username {

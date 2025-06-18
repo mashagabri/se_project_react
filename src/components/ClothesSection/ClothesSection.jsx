@@ -5,8 +5,10 @@ function ClothesSection({ clothingItems, handleAddClick, handleCardClick }) {
   return (
     <div className="clothes-section">
       <div className="clothes-section__header">
-        <h2>Your items</h2>
-        <button onClick={handleAddClick}>+ Add new</button>
+        <h2 className="header__text">Your items</h2>
+        <button className="button header__add-button" onClick={handleAddClick}>
+          + Add new
+        </button>
       </div>
       <ul className="clothes-section__cards">
         {clothingItems.map((item) => (

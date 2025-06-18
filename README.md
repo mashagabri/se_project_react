@@ -1,8 +1,24 @@
-# React + Vite
+# WhatWhere project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive weather app that shows temperature and suggests clothing. Users can add and manage clothing items.
 
-Currently, two official plugins are available:
+## 🛠 Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React + Vite
+- React Router
+- CSS Grid
+- Prettier + ESLint
+
+## 💻 Features
+
+- Add/remove clothing items
+- Temperature toggle (°F / °C)
+- Profile page
+
+## 📸 Screenshots
+
+![Main screen](image.png)
+
+## 🔗 GitHub Pages
+
+https://mashagabri.github.io/se_project_react/

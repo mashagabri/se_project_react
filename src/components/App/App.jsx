@@ -36,6 +36,50 @@ function App() {
   const mainLink = "/";
   const profileLink = "/profile";
 
+  useEffect(() => {
+    getWeather(coordinates, APIkey)
+      .then((weatherData) => {
+        setWeatherData(weatherData);
+      })
+      .catch((err) => {
+        console.log("Problem with weather api: " + err);
+      });
+  }, []);
+
+  useEffect(() => {
+    getItems()
+      .then((items) => {
+        setClothingItems(items.reverse());
+      })
+      .catch((err) => {
+        console.log("Problem with weather api: " + err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!activeModal) {
+      return;
+    }
+    function catchEscape(e) {
+      if (e.key === "Escape") {
+        closeActiveModal();
+      }
+    }
+
+    function clickOutside(e) {
+      if (e.target.classList.contains("modal")) {
+        closeActiveModal();
+      }
+    }
+
+    document.addEventListener("mousedown", clickOutside);
+    document.addEventListener("keydown", catchEscape);
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+      document.removeEventListener("keydown", catchEscape);
+    };
+  }, [activeModal, closeActiveModal]);
+
   function enableSendButton() {
     setActiveSendButton(true);
   }
@@ -53,12 +97,17 @@ function App() {
   }
 
   function handleAddNewItem(newItem) {
-    setClothingItems([newItem, ...clothingItems]);
-
-    closeActiveModal();
-    setInputName("");
-    setInputImage("");
-    setSelectWeatherType("hot");
+    addItem(newItem)
+      .then(() => {
+        setClothingItems([newItem, ...clothingItems]);
+        closeActiveModal();
+        setInputName("");
+        setInputImage("");
+        setSelectWeatherType("hot");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleSendForm(e) {
@@ -89,12 +138,18 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const itemId = formData.get("itemId");
-    setClothingItems(
-      clothingItems.filter((el) => {
-        return el._id != itemId;
+    deleteItem(itemId)
+      .then(() => {
+        setClothingItems(
+          clothingItems.filter((el) => {
+            return el._id != itemId;
+          })
+        );
+        closeActiveModal();
       })
-    );
-    closeActiveModal();
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const handleInputName = (e) => {
@@ -202,50 +257,6 @@ function App() {
       </fieldset>
     </ModalWithForm>
   );
-
-  useEffect(() => {
-    getWeather(coordinates, APIkey)
-      .then((weatherData) => {
-        setWeatherData(weatherData);
-      })
-      .catch((err) => {
-        console.log("Problem with weather api: " + err);
-      });
-  }, []);
-
-  useEffect(() => {
-    getItems()
-      .then((items) => {
-        setClothingItems(items);
-      })
-      .catch((err) => {
-        console.log("Problem with weather api: " + err);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (!activeModal) {
-      return;
-    }
-    function catchEscape(e) {
-      if (e.key === "Escape") {
-        closeActiveModal();
-      }
-    }
-
-    function clickOutside(e) {
-      if (e.target.classList.contains("modal")) {
-        closeActiveModal();
-      }
-    }
-
-    document.addEventListener("mousedown", clickOutside);
-    document.addEventListener("keydown", catchEscape);
-    return () => {
-      document.removeEventListener("mousedown", clickOutside);
-      document.removeEventListener("keydown", catchEscape);
-    };
-  }, [activeModal, closeActiveModal]);
 
   return (
     <div className="page">

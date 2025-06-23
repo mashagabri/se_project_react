@@ -16,6 +16,7 @@ import {
 import Profile from "../Profile/Profile";
 import { getItems, addItem, deleteItem } from "../../utils/api";
 import DeleteItemModal from "../DeleteItemModal/DeleteItemModal";
+import AddItemModal from "../AddItemModal/AddItemModal";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -49,6 +50,7 @@ function App() {
   useEffect(() => {
     getItems()
       .then((items) => {
+        console.log(items);
         setClothingItems(items.reverse());
       })
       .catch((err) => {
@@ -97,6 +99,7 @@ function App() {
   }
 
   function handleAddNewItem(newItem) {
+    console.log(newItem);
     addItem(newItem)
       .then(() => {
         setClothingItems([newItem, ...clothingItems]);
@@ -113,7 +116,7 @@ function App() {
   function handleSendForm(e) {
     e.preventDefault();
     const newItem = {
-      _id: 1 + clothingItems[clothingItems.length - 1]._id,
+      _id: 1 + clothingItems[0]._id,
       name: inputName,
       weather: selectWeatherType,
       link: inputImage,
@@ -173,91 +176,6 @@ function App() {
     setActiveModal("add-garment");
   };
 
-  const modalWithForm = (
-    <ModalWithForm
-      title="New garment"
-      buttonText="Add garment"
-      isOpen={activeModal === "add-garment"}
-      activeSendButton={activeSendButton}
-      onClose={closeActiveModal}
-      onSubmit={handleSendForm}
-    >
-      <span id="name-error" className="error-input"></span>
-      <label className="modal__label" htmlFor="name">
-        Name{""}
-        <input
-          onBlur={(e) => handleInputName(e)}
-          onInput={(e) => handleInputName(e)}
-          className="modal__input"
-          type="text"
-          id="name"
-          placeholder="Name"
-          value={inputName}
-        ></input>
-      </label>
-      <span id="imageUrl-error" className="error-input"></span>
-      <label className="modal__label" htmlFor="imageUrl">
-        Image{""}
-        <input
-          onBlur={(e) => handleInputImage(e)}
-          onInput={(e) => handleInputImage(e)}
-          className="modal__input"
-          type="url"
-          id="imageUrl"
-          placeholder="Image URL"
-          value={inputImage}
-        ></input>
-      </label>
-
-      <fieldset id="weather-type" className="modal__radio-buttons">
-        <legend className="modal__legend">Select the weather type:</legend>
-
-        <label className="modal__label modal__label_type_radio" htmlFor="hot">
-          <input
-            onChange={() => {
-              setSelectWeatherType("hot");
-            }}
-            id="hot"
-            value="hot"
-            name="weatherType"
-            className="modal__radio-input"
-            type="radio"
-            checked={selectWeatherType === "hot"}
-          />
-          <span className="modal__radio-text">Hot</span>
-        </label>
-        <label className="modal__label modal__label_type_radio" htmlFor="warm">
-          <input
-            onChange={() => {
-              setSelectWeatherType("warm");
-            }}
-            id="warm"
-            value="warm"
-            name="weatherType"
-            className="modal__radio-input"
-            type="radio"
-            checked={selectWeatherType === "warm"}
-          />
-          <span className="modal__radio-text">Warm</span>
-        </label>
-        <label className="modal__label modal__label_type_radio" htmlFor="cold">
-          <input
-            onChange={() => {
-              setSelectWeatherType("cold");
-            }}
-            id="cold"
-            value="cold"
-            name="weatherType"
-            className="modal__radio-input"
-            type="radio"
-            checked={selectWeatherType === "cold"}
-          />
-          <span className="modal__radio-text">Cold</span>
-        </label>
-      </fieldset>
-    </ModalWithForm>
-  );
-
   return (
     <div className="page">
       <CurrentTemperatureProvider>
@@ -303,7 +221,20 @@ function App() {
             handleDeleteItem={handleDeleteItem}
             itemId={selectedCard._id}
           />
-          {modalWithForm}
+          {/* {modalWithForm} */}
+          <AddItemModal
+            buttonText="Add garment"
+            isOpen={activeModal === "add-garment"}
+            onClose={closeActiveModal}
+            onSubmit={handleSendForm}
+            activeSendButton={activeSendButton}
+            inputName={inputName}
+            inputImage={inputImage}
+            selectWeatherType={selectWeatherType}
+            handleInputName={handleInputName}
+            handleInputImage={handleInputImage}
+            setSelectWeatherType={setSelectWeatherType}
+          />
           <Footer />
         </div>
       </CurrentTemperatureProvider>

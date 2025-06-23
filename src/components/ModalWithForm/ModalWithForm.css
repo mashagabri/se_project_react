@@ -56,6 +56,7 @@
   border-radius: 4px;
   height: 36px;
   width: 124px;
+  text-align: center;
 }
 
 .modal__sumbit:not(.modal__sumbit_disabled):hover {

@@ -52,7 +52,6 @@
 .modal__sumbit {
   background-color: black;
   color: white;
-  margin-top: 32px;
   border-radius: 4px;
   height: 36px;
   width: 124px;
@@ -153,4 +152,33 @@
   font-size: 16px;
   line-height: 20px;
   letter-spacing: 0%;
+}
+
+.additional_button {
+  all: unset;
+  display: block;
+  margin: 10px;
+  font-family: "Cabinet Grotesk Regular";
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #00000080;
+}
+
+.modal__buttons {
+  display: flex;
+  margin-top: 32px;
+}
+
+.modal__error {
+  font-family: "Cabinet Grotesk Regular";
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #ff4d00;
+  margin-top: 24px;
 }

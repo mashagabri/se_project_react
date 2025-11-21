@@ -1,15 +1,29 @@
 import SideBar from "../Sidebar/Sidebar";
 import ClothesSection from "../ClothesSection/ClothesSection";
 import "./Profile.css";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useContext } from "react";
 
-function Profile({ clothingItems, handleAddClick, handleCardClick }) {
+function Profile({
+  clothingItems,
+  handleAddClick,
+  handleCardClick,
+  handleEditProfileClick,
+  handleLikeClick,
+}) {
+  const currentUserContext = useContext(CurrentUserContext);
+  const loggedIn = currentUserContext.loggedIn;
+  if (!loggedIn) {
+    window.location.href = "http://localhost:3000/";
+  }
   return (
     <section className="profile">
-      <SideBar /> {}
+      <SideBar handleEditProfileClick={handleEditProfileClick} />
       <ClothesSection
         clothingItems={clothingItems}
         handleAddClick={handleAddClick}
         handleCardClick={handleCardClick}
+        handleLikeClick={handleLikeClick}
       />
     </section>
   );

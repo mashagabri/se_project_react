@@ -4,9 +4,14 @@ import ItemCard from "../ItemCard/ItemCard";
 import { useContext } from "react";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 
-function Main({ clothingItems, weatherData, handleCardClick }) {
+function Main({
+  clothingItems,
+  weatherData,
+  handleCardClick,
+  handleLikeClick,
+}) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  console.log(clothingItems);
+
   return (
     <main>
       <WeatherCard weatherData={weatherData} />
@@ -26,6 +31,7 @@ function Main({ clothingItems, weatherData, handleCardClick }) {
                   key={item._id}
                   item={item}
                   handleCardClick={handleCardClick}
+                  handleLikeClick={handleLikeClick}
                 />
               );
             })}
@@ -51,7 +57,7 @@ function Main({ clothingItems, weatherData, handleCardClick }) {
 //             <ItemCard
 //               key={item._id}
 //               name={item.name}
-//               link={item.link}
+//               imageUrl={item.imageUrl}
 //               weather={item.weather}
 //               handleCardClick={props.handleCardClick}
 //             />

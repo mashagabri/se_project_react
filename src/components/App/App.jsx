@@ -4,19 +4,31 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import ItemModal from "../ItemModal/ItemModal";
-import { useState, useEffect } from "react";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import { useState, useEffect, useContext } from "react";
 import { getWeather } from "../../utils/weatherApi";
 import { coordinates, APIkey } from "../../utils/constants";
 import { Routes, Route } from "react-router-dom";
+import { CurrentTemperatureProvider } from "../../contexts/CurrentTemperatureUnitContext";
 import {
-  CurrentTemperatureUnitContext,
-  CurrentTemperatureProvider,
-} from "../../contexts/CurrentTemperatureUnitContext";
+  CurrentUserProvider,
+  CurrentUserContext,
+} from "../../contexts/CurrentUserContext";
 import Profile from "../Profile/Profile";
-import { getItems, addItem, deleteItem } from "../../utils/api";
+import {
+  getItems,
+  addItem,
+  deleteItem,
+  signup,
+  signin,
+  updateUserInformation,
+  likeClothingItem,
+  dislikeClothingItem,
+} from "../../utils/api";
 import DeleteItemModal from "../DeleteItemModal/DeleteItemModal";
 import AddItemModal from "../AddItemModal/AddItemModal";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import LoginModal from "../LoginModal/LoginModal";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -27,12 +39,37 @@ function App() {
     city: "",
   });
   const [activeSendButton, setActiveSendButton] = useState(false);
-
+  const [activeSendRegistrationButton, setActiveSendRegistrationButton] =
+    useState(false);
+  const [activeSendLoginButton, setActiveSendLoginButton] = useState(false);
   const [clothingItems, setClothingItems] = useState([]);
 
   const [inputName, setInputName] = useState("");
   const [inputImage, setInputImage] = useState("");
   const [selectWeatherType, setSelectWeatherType] = useState("hot");
+  const [inputUserName, setInputUserName] = useState("");
+  const [inputAvatar, setInputAvatar] = useState("");
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
+
+  const [errorMessageRegistration, setErrorMessageRegistration] = useState("");
+  const [errorMessageEditProfile, setErrorMessageEditProfile] = useState("");
+  const [loginInputEmail, setLoginInputEmail] = useState("");
+  const [loginInputPassword, setLoginInputPassword] = useState("");
+  const currentUserContext = useContext(CurrentUserContext);
+  const currentUser = currentUserContext ? currentUserContext.currentUser : {};
+
+  const [activeSendButtonEditProfile, setActiveSendButtonEditProfile] =
+    useState(true);
+
+  const [editProfileName, setEditProfileName] = useState(
+    ""
+    // currentUser.name ?? ""
+  );
+  const [editProfileAvatar, setEditProfileAvatar] = useState(
+    ""
+    // currentUser.avatar ?? ""
+  );
 
   const mainLink = "/";
   const profileLink = "/profile";
@@ -50,11 +87,10 @@ function App() {
   useEffect(() => {
     getItems()
       .then((items) => {
-        console.log(items);
         setClothingItems(items.reverse());
       })
       .catch((err) => {
-        console.log("Problem with weather api: " + err);
+        console.log("Problem with clothing api: " + err);
       });
   }, []);
 
@@ -99,7 +135,6 @@ function App() {
   }
 
   function handleAddNewItem(newItem) {
-    console.log(newItem);
     addItem(newItem)
       .then(() => {
         setClothingItems([newItem, ...clothingItems]);
@@ -113,13 +148,35 @@ function App() {
       });
   }
 
+  const handleCardLike = (_id, isLiked) => {
+    if (!isLiked) {
+      likeClothingItem(_id)
+        .then((updatedCard) => {
+          setClothingItems((cards) =>
+            cards.map((item) => (item._id === _id ? updatedCard : item))
+          );
+        })
+        .catch((err) => console.log(err));
+    } else {
+      dislikeClothingItem(_id)
+        .then((updatedCard) => {
+          console.log(updatedCard);
+          setClothingItems((cards) =>
+            cards.map((item) => (item._id === _id ? updatedCard : item))
+          );
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   function handleSendForm(e) {
     e.preventDefault();
     const newItem = {
-      _id: 1 + clothingItems[0]._id,
+      _id: clothingItems.length ? clothingItems[0]._id + 1 : 1,
+      // _id: 1 + (clothingItems[0]?._id ?? 0),
       name: inputName,
       weather: selectWeatherType,
-      link: inputImage,
+      imageUrl: inputImage,
     };
 
     handleAddNewItem(newItem);
@@ -133,8 +190,63 @@ function App() {
     }
   }
 
+  function checkDisabledRegistrationButton() {
+    if (inputUserName && inputEmail && inputAvatar && inputPassword) {
+      setActiveSendRegistrationButton(true);
+    } else {
+      setActiveSendRegistrationButton(false);
+    }
+  }
+
   function handleOpenFormDeleteItem() {
     setActiveModal("Delete item");
+  }
+
+  function handleSignup(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const avatar = formData.get("avatarUrl");
+    const password = formData.get("password");
+    signup({ name, email, avatar, password })
+      .then(() => {
+        setActiveModal("login");
+      })
+      .catch((e) => {
+        if (e.status === 400) {
+          setErrorMessageRegistration("Invalid data");
+        } else if (e.status === 409) {
+          setErrorMessageRegistration("User exists");
+        } else {
+          setErrorMessageRegistration("Error occured");
+        }
+      });
+  }
+
+  function handleSignIn(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    // this is information from form which is sent when we click the button, that person has inputted
+    const email = formData.get("email");
+    const password = formData.get("password");
+    signin({ email, password })
+      .then((res) => {
+        // console.log(res);
+        localStorage.setItem("jwt", res.token);
+        setActiveModal("");
+        window.location.reload();
+        // userContext.setLoggedIn(true);
+      })
+      .catch((e) => {
+        if (e.status === 400) {
+          setErrorMessageRegistration("Invalid data");
+        } else if (e.status === 401) {
+          setErrorMessageRegistration("Incorrect password or email");
+        } else {
+          setErrorMessageRegistration("Error occured");
+        }
+      });
   }
 
   function handleDeleteItem(e) {
@@ -167,6 +279,95 @@ function App() {
     checkDisabledButton();
   };
 
+  const handleInputUserName = (e) => {
+    const value = e.target.value;
+    setInputUserName(value);
+    checkDisabledRegistrationButton();
+  };
+
+  const handleInputEmail = (e) => {
+    const value = e.target.value;
+    setInputEmail(value);
+    checkDisabledRegistrationButton();
+  };
+
+  const handleInputAvatar = (e) => {
+    const value = e.target.value;
+    setInputAvatar(value);
+    checkDisabledRegistrationButton();
+  };
+
+  const handleInputPassword = (e) => {
+    const value = e.target.value;
+    setInputPassword(value);
+    checkDisabledRegistrationButton();
+  };
+
+  const handleClickAdditionalButton = (e) => {
+    setActiveModal("login");
+  };
+
+  const handleClickAdditionalSignUpButton = (e) => {
+    setActiveModal("sign-up");
+  };
+
+  const handleInputLoginEmail = (e) => {
+    setLoginInputEmail(e.target.value);
+    checkInputLoginEmailAndPassword();
+  };
+
+  const handleInputLoginPassword = (e) => {
+    setLoginInputPassword(e.target.value);
+    checkInputLoginEmailAndPassword();
+  };
+
+  const checkInputLoginEmailAndPassword = () => {
+    if (loginInputEmail && loginInputPassword) {
+      setActiveSendLoginButton(true);
+    } else {
+      setActiveSendLoginButton(false);
+    }
+  };
+
+  const checkEditProfileForm = () => {
+    if (editProfileName && editProfileAvatar) {
+      setActiveSendButtonEditProfile(true);
+    } else {
+      setActiveSendButtonEditProfile(false);
+    }
+  };
+
+  async function handleSendFormEditProfile(e) {
+    e.preventDefault();
+    await updateUserInformation(editProfileName, editProfileAvatar)
+      .then(() => {
+        // currentUserContext?.getData();
+        setActiveModal("");
+        Promise.resolve();
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.status === 400) {
+          setErrorMessageEditProfile("Invalid data");
+        } else if (err.status === 404) {
+          setErrorMessageEditProfile("User not found");
+        } else {
+          setErrorMessageEditProfile("Error occured");
+        }
+        Promise.reject();
+      });
+  }
+
+  const handleEditProfileName = (e) => {
+    setEditProfileName(e.target.value);
+    checkEditProfileForm();
+  };
+
+  const handleEditProfileAvatar = (e) => {
+    setEditProfileAvatar(e.target.value);
+    checkEditProfileForm();
+  };
+
   const handleCardClick = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
@@ -176,15 +377,30 @@ function App() {
     setActiveModal("add-garment");
   };
 
+  const handleSignUpClick = () => {
+    setActiveModal("sign-up");
+  };
+
+  const handleLoginClick = () => {
+    setActiveModal("login");
+  };
+
+  const handleEditProfileClick = () => {
+    setActiveModal("edit-profile");
+  };
+
   return (
-    <div className="page">
+    <CurrentUserProvider>
       <CurrentTemperatureProvider>
         <div className="page__content">
           <Header
             handleAddClick={handleAddClick}
             weatherData={weatherData}
-            mainLink={mainLink}
-            profileLink={profileLink}
+            // mainLink={mainLink}
+            // profileLink={profileLink}
+            // loggedIn={userContext.loggedIn}
+            handleSignUpClick={handleSignUpClick}
+            handleLoginClick={handleLoginClick}
           />
           <Routes>
             <Route
@@ -194,9 +410,11 @@ function App() {
                   clothingItems={clothingItems}
                   weatherData={weatherData}
                   handleCardClick={handleCardClick}
+                  handleLikeClick={handleCardLike}
                 />
               }
             />
+
             <Route
               path={profileLink}
               element={
@@ -204,11 +422,40 @@ function App() {
                   clothingItems={clothingItems}
                   handleAddClick={handleAddClick}
                   handleCardClick={handleCardClick}
+                  handleEditProfileClick={handleEditProfileClick}
+                  handleLikeClick={handleCardLike}
                 />
               }
             />
           </Routes>
-
+          <RegisterModal
+            isOpen={activeModal === "sign-up"}
+            onClose={closeActiveModal}
+            onSubmit={handleSignup}
+            activeSendButton={activeSendRegistrationButton}
+            inputName={inputUserName}
+            inputAvatar={inputAvatar}
+            inputEmail={inputEmail}
+            inputPassword={inputPassword}
+            handleInputName={handleInputUserName}
+            handleInputAvatar={handleInputAvatar}
+            handleInputEmail={handleInputEmail}
+            handleInputPassword={handleInputPassword}
+            clickAdditionalButton={handleClickAdditionalButton}
+            errorMessage={errorMessageRegistration}
+          />
+          <LoginModal
+            isOpen={activeModal === "login"}
+            onClose={closeActiveModal}
+            onSubmit={handleSignIn}
+            activeSendButton={activeSendLoginButton}
+            inputEmail={loginInputEmail}
+            inputPassword={loginInputPassword}
+            handleInputEmail={handleInputLoginEmail}
+            handleInputPassword={handleInputLoginPassword}
+            clickAdditionalButton={handleClickAdditionalSignUpButton}
+            errorMessage={errorMessageRegistration}
+          />
           <ItemModal
             isOpen={activeModal === "preview"}
             card={selectedCard}
@@ -221,7 +468,6 @@ function App() {
             handleDeleteItem={handleDeleteItem}
             itemId={selectedCard._id}
           />
-          {/* {modalWithForm} */}
           <AddItemModal
             buttonText="Add garment"
             isOpen={activeModal === "add-garment"}
@@ -235,10 +481,23 @@ function App() {
             handleInputImage={handleInputImage}
             setSelectWeatherType={setSelectWeatherType}
           />
+          <EditProfileModal
+            onClose={closeActiveModal}
+            isOpen={activeModal === "edit-profile"}
+            activeSendButton={activeSendButtonEditProfile}
+            onSubmit={handleSendFormEditProfile}
+            editProfileName={editProfileName}
+            editProfileAvatar={editProfileAvatar}
+            handleEditProfileName={handleEditProfileName}
+            handleEditProfileAvatar={handleEditProfileAvatar}
+            errorMessage={errorMessageEditProfile}
+            setEditProfileName={setEditProfileName}
+            setEditProfileAvatar={setEditProfileAvatar}
+          />
           <Footer />
         </div>
       </CurrentTemperatureProvider>
-    </div>
+    </CurrentUserProvider>
   );
 }
 

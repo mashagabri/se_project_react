@@ -10,17 +10,10 @@ function ModalWithForm({
   onClose,
   onSubmit,
   children,
+  additionalButton = false,
+  clickAdditionalButton = false,
+  errorMessage = "",
 }) {
-  // useEffect(() => {
-  //   clearModal();
-  // }, []);
-
-  // function clearModal() {
-  //   for (let el of children) {
-  //     console.log(el);
-  //   }
-  // }
-
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
       <div className="modal__container modal__container_with-form">
@@ -30,15 +23,28 @@ function ModalWithForm({
         </button>
         <form className="modal__form" onSubmit={onSubmit}>
           {children}
-          <button
-            className={`button modal__sumbit${
-              activeSendButton ? "" : " modal__sumbit_disabled"
-            }`}
-            type="submit"
-            disabled={activeSendButton ? "" : "disabled"}
-          >
-            {buttonText}
-          </button>
+          <div className="modal__error">{errorMessage}</div>
+          <div className="modal__buttons">
+            <button
+              className={`button modal__sumbit${
+                activeSendButton ? "" : " modal__sumbit_disabled"
+              }`}
+              type="submit"
+              disabled={activeSendButton ? "" : "disabled"}
+            >
+              {buttonText}
+            </button>
+            {additionalButton ? (
+              <button
+                className="additional_button"
+                onClick={clickAdditionalButton}
+              >
+                {additionalButton}
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
         </form>
       </div>
     </div>

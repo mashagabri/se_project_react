@@ -22,3 +22,11 @@ An interactive weather app that shows temperature and suggests clothing. Users c
 ## 🔗 GitHub Pages
 
 https://mashagabri.github.io/se_project_react/
+
+## Link to backend repository
+
+https://github.com/mashagabri/se_project_express.git
+
+### Main address of backend
+
+http://localhost:3000

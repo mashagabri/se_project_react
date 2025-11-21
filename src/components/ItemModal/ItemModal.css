@@ -40,16 +40,22 @@
   margin: 12px 0 32px 32px;
 }
 
-.modal__delete {
+.modal__delete-button {
+  all: unset;
+  margin-top: 20px;
   margin-right: 32px;
   width: 101px;
   color: #ff4d00;
 }
 
-.modal__delete:hover {
+.modal__delete-button:hover {
   cursor: pointer;
 }
 
 .modal__image {
   width: 100%;
+}
+
+.modal__delete-button_hidden {
+  display: none;
 }

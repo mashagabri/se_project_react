@@ -13,7 +13,7 @@ function DeleteItemModal({ onClose, isOpen, handleDeleteItem, itemId }) {
             irreversible.
           </p>
         </div>
-        <div className="modal__buttons">
+        <div className="modal__buttons_delete">
           <div className="modal__confirmation">
             <form onSubmit={handleDeleteItem}>
               <input type="hidden" name="itemId" value={itemId ?? ""} />

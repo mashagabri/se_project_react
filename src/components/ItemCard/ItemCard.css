@@ -1,6 +1,5 @@
 .card {
   background-color: #e9e9e9;
-
   width: 328px;
   height: 328px;
   position: relative;
@@ -11,16 +10,30 @@
   overflow: hidden;
 }
 .card__name {
+  display: inline;
   background-color: #ffffff;
   padding: 2px 12px;
-  position: absolute;
-  top: 15px;
-  margin: 0;
   border-radius: 4px;
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
   color: #00000099;
 }
-.card__image {
+
+.card__title {
+  line-height: 20px;
+  position: absolute;
+  top: 15px;
+  margin: 0;
+}
+
+.card__heart {
+  margin-left: 10px;
+  vertical-align: middle;
+  height: 18px;
+  width: 15px;
+}
+
+.card__heart:hover {
+  cursor: pointer;
 }

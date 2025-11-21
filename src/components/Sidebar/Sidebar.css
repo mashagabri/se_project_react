@@ -1,18 +1,54 @@
 .sidebar {
   width: 25%;
-  display: flex;
-  justify-content: left;
   margin-top: 19px;
 }
 
+.sidebar__header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
 .sidebar__avatar {
+  border-radius: 50%;
   width: 56px;
   height: 56px;
 }
 
 .sidebar__username {
+  display: inline;
   font-weight: 700;
   font-size: 20px;
   line-height: 100%;
   margin-left: 16px;
+}
+
+.sidebar__change-data {
+  all: unset;
+  display: block;
+  margin-top: 24px;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.sidebar__change-data:hover {
+  cursor: pointer;
+}
+
+.sidebar__log-out {
+  all: unset;
+  display: block;
+  margin-top: 8px;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.sidebar__log-out:hover {
+  cursor: pointer;
 }

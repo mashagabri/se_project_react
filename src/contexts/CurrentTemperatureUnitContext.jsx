@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 export const CurrentTemperatureUnitContext = createContext();
 export const CurrentTemperatureProvider = ({ children }) => {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState(() => {
-    const saved = sessionStorage.getItem("currentTemperature") ?? "F";
+    const saved = sessionStorage.getItem("currentTemperatureUnit") ?? "F";
     return saved;
   });
 
@@ -17,7 +17,7 @@ export const CurrentTemperatureProvider = ({ children }) => {
 
   useEffect(() => {
     if (currentTemperatureUnit !== null) {
-      sessionStorage.setItem("currentTemperature", currentTemperatureUnit);
+      sessionStorage.setItem("currentTemperatureUnit", currentTemperatureUnit);
     }
   }, [currentTemperatureUnit]);
 

@@ -8,6 +8,8 @@
   max-width: 1360px;
   margin: 0 auto;
   padding: 0 20px;
+  position: relative;
+  min-height: 100vh;
 }
 
 .button {
@@ -20,4 +22,10 @@
 
 h2 {
   font-weight: 700;
+}
+
+ul {
+  all: unset;
+  display: block;
+  margin-top: 20px;
 }

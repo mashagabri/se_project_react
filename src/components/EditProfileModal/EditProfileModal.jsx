@@ -1,5 +1,4 @@
 import "./EditProfileModal.css";
-import close from "../../assets/close.svg";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useContext, useEffect } from "react";
@@ -21,13 +20,12 @@ function EditProfileModal({
   const currentUser = currentUserContext?.currentUser ?? {};
   useEffect(() => {
     if (currentUser) {
+      console.log(currentUser.name);
       setEditProfileName(currentUser.name);
       setEditProfileAvatar(currentUser.avatar);
-      console.log("editprofilemodal");
     }
   }, []);
 
-  console.log(currentUser);
   async function onSubmitWithCheck(e) {
     await onSubmit(e).then(() => {
       currentUserContext.getData();
@@ -48,13 +46,19 @@ function EditProfileModal({
       <label className="modal__label" htmlFor="edit-profile-name">
         Name *{""}
         <input
-          onBlur={(e) => handleEditProfileName(e)}
-          onInput={(e) => handleEditProfileName(e)}
+          onBlur={(e) => {
+            console.log(e.target.value);
+            handleEditProfileName(e);
+          }}
+          onInput={(e) => {
+            console.log(e.target.value);
+            handleEditProfileName(e);
+          }}
           className="modal__input"
           name="name2"
           type="text"
           id="edit-profile-name"
-          value={editProfileName ? editProfileName : currentUser.name ?? ""}
+          value={editProfileName}
           required={true}
         ></input>
       </label>
@@ -69,9 +73,7 @@ function EditProfileModal({
           name="avatar2"
           type="url"
           id="edit-profile-avatar"
-          value={
-            editProfileAvatar ? editProfileAvatar : currentUser.avatar ?? ""
-          }
+          value={editProfileAvatar}
           required={true}
         ></input>
       </label>

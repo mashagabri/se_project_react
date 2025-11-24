@@ -80,6 +80,7 @@
 
 .modal__input {
   all: unset;
+  position: relative;
   display: block;
   border-bottom: 1px solid #000000;
   width: 100%;
@@ -160,7 +161,6 @@
   margin: 10px;
   font-family: "Cabinet Grotesk Regular";
   font-weight: 700;
-  font-style: Bold;
   font-size: 16px;
   line-height: 20px;
   letter-spacing: 0%;

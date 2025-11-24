@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer";
 import ItemModal from "../ItemModal/ItemModal";
 import { useState, useEffect, useContext } from "react";
 import { getWeather } from "../../utils/weatherApi";
-import { coordinates, APIkey } from "../../utils/constants";
+import { coordinates, ApiKey } from "../../utils/constants";
 import { Routes, Route } from "react-router-dom";
 import { CurrentTemperatureProvider } from "../../contexts/CurrentTemperatureUnitContext";
 import {
@@ -57,7 +57,7 @@ function App() {
   const [loginInputEmail, setLoginInputEmail] = useState("");
   const [loginInputPassword, setLoginInputPassword] = useState("");
   const currentUserContext = useContext(CurrentUserContext);
-  const currentUser = currentUserContext ? currentUserContext.currentUser : {};
+  // const currentUser = currentUserContext ? currentUserContext.currentUser : {};
 
   const [activeSendButtonEditProfile, setActiveSendButtonEditProfile] =
     useState(true);
@@ -75,7 +75,7 @@ function App() {
   const profileLink = "/profile";
 
   useEffect(() => {
-    getWeather(coordinates, APIkey)
+    getWeather(coordinates, ApiKey)
       .then((weatherData) => {
         setWeatherData(weatherData);
       })
@@ -130,9 +130,9 @@ function App() {
     setActiveModal("");
   }
 
-  function setDataInput() {
-    checkDisabledButton();
-  }
+  // function setDataInput() {
+  //   checkDisabledButton();
+  // }
 
   function handleAddNewItem(newItem) {
     addItem(newItem)
@@ -160,7 +160,6 @@ function App() {
     } else {
       dislikeClothingItem(_id)
         .then((updatedCard) => {
-          console.log(updatedCard);
           setClothingItems((cards) =>
             cards.map((item) => (item._id === _id ? updatedCard : item))
           );
@@ -330,6 +329,8 @@ function App() {
   };
 
   const checkEditProfileForm = () => {
+    console.log(editProfileName);
+    console.log(editProfileAvatar);
     if (editProfileName && editProfileAvatar) {
       setActiveSendButtonEditProfile(true);
     } else {
@@ -359,7 +360,10 @@ function App() {
   }
 
   const handleEditProfileName = (e) => {
-    setEditProfileName(e.target.value);
+    const currentName = e.target.value;
+    console.log(currentName);
+    setEditProfileName(currentName);
+    // TODO don not change the editProfileName
     checkEditProfileForm();
   };
 

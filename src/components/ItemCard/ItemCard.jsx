@@ -7,7 +7,6 @@ import { useContext } from "react";
 function ItemCard({ item, handleCardClick, handleLikeClick }) {
   const currentUser = useContext(CurrentUserContext).currentUser ?? {};
   const isLiked = item.likes.some((_id) => _id === currentUser._id);
-  console.log(isLiked);
   return (
     <li className="card">
       <div className="card__title">

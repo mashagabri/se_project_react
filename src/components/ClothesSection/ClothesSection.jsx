@@ -11,9 +11,11 @@ function ClothesSection({
 }) {
   const currentUserContext = useContext(CurrentUserContext);
   const currentUser = currentUserContext.currentUser ?? {};
+
   const filteredItems = clothingItems.filter((item) => {
     return currentUser._id === item.owner;
   });
+
   return (
     <div className="clothes-section">
       <div className="clothes-section__header">

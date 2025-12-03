@@ -10,7 +10,7 @@ export const CurrentUserProvider = ({ children }) => {
   const getData = async () => {
     const token = localStorage.getItem("jwt");
     if (token) {
-      await getUserInformation(token)
+      await getUserInformation()
         .then((data) => {
           setLoggedIn(true);
           setCurrentUser(data);
@@ -24,6 +24,7 @@ export const CurrentUserProvider = ({ children }) => {
           setLoading(true);
         });
     } else {
+      console.log("not found token");
       setLoggedIn(false);
       setCurrentUser(null);
       setLoading(true);

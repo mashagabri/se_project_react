@@ -9,11 +9,9 @@ import { getWeather } from "../../utils/weatherApi";
 import { coordinates, ApiKey } from "../../utils/constants";
 import { Routes, Route } from "react-router-dom";
 import { CurrentTemperatureProvider } from "../../contexts/CurrentTemperatureUnitContext";
-import {
-  CurrentUserProvider,
-  CurrentUserContext,
-} from "../../contexts/CurrentUserContext";
+import { CurrentUserProvider } from "../../contexts/CurrentUserContext";
 import Profile from "../Profile/Profile";
+import ProtectedRoute from "../../hooks/protectedRoute";
 import {
   getItems,
   addItem,
@@ -56,8 +54,6 @@ function App() {
   const [errorMessageEditProfile, setErrorMessageEditProfile] = useState("");
   const [loginInputEmail, setLoginInputEmail] = useState("");
   const [loginInputPassword, setLoginInputPassword] = useState("");
-  const currentUserContext = useContext(CurrentUserContext);
-  // const currentUser = currentUserContext ? currentUserContext.currentUser : {};
 
   const [activeSendButtonEditProfile, setActiveSendButtonEditProfile] =
     useState(true);
@@ -70,6 +66,8 @@ function App() {
     ""
     // currentUser.avatar ?? ""
   );
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const mainLink = "/";
   const profileLink = "/profile";
@@ -118,6 +116,22 @@ function App() {
     };
   }, [activeModal, closeActiveModal]);
 
+  useEffect(() => {
+    checkDisabledButton();
+  }, [inputName, inputImage]);
+
+  useEffect(() => {
+    checkEditProfileForm();
+  }, [editProfileName, editProfileAvatar]);
+
+  useEffect(() => {
+    checkInputLoginEmailAndPassword();
+  }, [loginInputEmail, loginInputPassword]);
+
+  useEffect(() => {
+    checkDisabledRegistrationButton();
+  }, [inputUserName, inputEmail, inputAvatar, inputPassword]);
+
   function enableSendButton() {
     setActiveSendButton(true);
   }
@@ -129,10 +143,6 @@ function App() {
   function closeActiveModal() {
     setActiveModal("");
   }
-
-  // function setDataInput() {
-  //   checkDisabledButton();
-  // }
 
   function handleAddNewItem(newItem) {
     addItem(newItem)
@@ -172,7 +182,6 @@ function App() {
     e.preventDefault();
     const newItem = {
       _id: clothingItems.length ? clothingItems[0]._id + 1 : 1,
-      // _id: 1 + (clothingItems[0]?._id ?? 0),
       name: inputName,
       weather: selectWeatherType,
       imageUrl: inputImage,
@@ -223,19 +232,17 @@ function App() {
       });
   }
 
-  function handleSignIn(e) {
+  async function handleSignIn(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    // this is information from form which is sent when we click the button, that person has inputted
     const email = formData.get("email");
     const password = formData.get("password");
-    signin({ email, password })
+    await signin({ email, password })
       .then((res) => {
-        // console.log(res);
         localStorage.setItem("jwt", res.token);
-        setActiveModal("");
-        window.location.reload();
-        // userContext.setLoggedIn(true);
+        closeActiveModal();
+        setIsLoggedIn(true);
+        return Promise.resolve();
       })
       .catch((e) => {
         if (e.status === 400) {
@@ -245,6 +252,7 @@ function App() {
         } else {
           setErrorMessageRegistration("Error occured");
         }
+        return Promise.reject();
       });
   }
 
@@ -269,37 +277,31 @@ function App() {
   const handleInputName = (e) => {
     const value = e.target.value;
     setInputName(value);
-    checkDisabledButton();
   };
 
   const handleInputImage = (e) => {
     const value = e.target.value;
     setInputImage(value);
-    checkDisabledButton();
   };
 
   const handleInputUserName = (e) => {
     const value = e.target.value;
     setInputUserName(value);
-    checkDisabledRegistrationButton();
   };
 
   const handleInputEmail = (e) => {
     const value = e.target.value;
     setInputEmail(value);
-    checkDisabledRegistrationButton();
   };
 
   const handleInputAvatar = (e) => {
     const value = e.target.value;
     setInputAvatar(value);
-    checkDisabledRegistrationButton();
   };
 
   const handleInputPassword = (e) => {
     const value = e.target.value;
     setInputPassword(value);
-    checkDisabledRegistrationButton();
   };
 
   const handleClickAdditionalButton = (e) => {
@@ -312,12 +314,10 @@ function App() {
 
   const handleInputLoginEmail = (e) => {
     setLoginInputEmail(e.target.value);
-    checkInputLoginEmailAndPassword();
   };
 
   const handleInputLoginPassword = (e) => {
     setLoginInputPassword(e.target.value);
-    checkInputLoginEmailAndPassword();
   };
 
   const checkInputLoginEmailAndPassword = () => {
@@ -329,8 +329,6 @@ function App() {
   };
 
   const checkEditProfileForm = () => {
-    console.log(editProfileName);
-    console.log(editProfileAvatar);
     if (editProfileName && editProfileAvatar) {
       setActiveSendButtonEditProfile(true);
     } else {
@@ -342,8 +340,7 @@ function App() {
     e.preventDefault();
     await updateUserInformation(editProfileName, editProfileAvatar)
       .then(() => {
-        // currentUserContext?.getData();
-        setActiveModal("");
+        closeActiveModal();
         Promise.resolve();
       })
       .catch((err) => {
@@ -361,15 +358,11 @@ function App() {
 
   const handleEditProfileName = (e) => {
     const currentName = e.target.value;
-    console.log(currentName);
     setEditProfileName(currentName);
-    // TODO don not change the editProfileName
-    checkEditProfileForm();
   };
 
   const handleEditProfileAvatar = (e) => {
     setEditProfileAvatar(e.target.value);
-    checkEditProfileForm();
   };
 
   const handleCardClick = (card) => {
@@ -422,13 +415,15 @@ function App() {
             <Route
               path={profileLink}
               element={
-                <Profile
-                  clothingItems={clothingItems}
-                  handleAddClick={handleAddClick}
-                  handleCardClick={handleCardClick}
-                  handleEditProfileClick={handleEditProfileClick}
-                  handleLikeClick={handleCardLike}
-                />
+                <ProtectedRoute>
+                  <Profile
+                    clothingItems={clothingItems}
+                    handleAddClick={handleAddClick}
+                    handleCardClick={handleCardClick}
+                    handleEditProfileClick={handleEditProfileClick}
+                    handleLikeClick={handleCardLike}
+                  />
+                </ProtectedRoute>
               }
             />
           </Routes>

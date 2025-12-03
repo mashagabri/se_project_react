@@ -2,110 +2,89 @@
 const baseUrl = "http://localhost:3001";
 
 export async function signup({ name, email, avatar, password }) {
-  return fetch(`${baseUrl}/signup`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, avatar, password }),
-  })
-    .then(checkResponse)
-    .catch((e) => {
-      return Promise.reject(e);
-    });
+  return requestWithoutToken(
+    `${baseUrl}/signup`,
+    "POST",
+    JSON.stringify({ name, email, avatar, password })
+  );
 }
 
 export async function signin({ email, password }) {
-  return fetch(`${baseUrl}/signin`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  })
-    .then(checkResponse)
-    .catch((e) => {
-      return Promise.reject(e);
-    });
+  return requestWithoutToken(
+    `${baseUrl}/signin`,
+    "POST",
+    JSON.stringify({ email, password })
+  );
 }
 
-export async function getUserInformation(token) {
-  return fetch(`${baseUrl}/users/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
-  })
-    .then(checkResponse)
-    .catch((e) => {
-      return Promise.reject(e);
-    });
+export async function getUserInformation() {
+  return requestWithToken(`${baseUrl}/users/me`, "GET");
 }
 
 export async function updateUserInformation(name, avatar) {
+  return requestWithToken(
+    `${baseUrl}/users/me`,
+    "PATCH",
+    JSON.stringify({
+      name,
+      avatar,
+    })
+  );
+}
+
+export async function getItems() {
+  return requestWithoutToken(`${baseUrl}/items`, "GET");
+}
+
+export async function addItem({ name, imageUrl, weather }) {
+  return requestWithToken(
+    `${baseUrl}/items`,
+    "POST",
+    JSON.stringify({ name, imageUrl, weather })
+  );
+}
+
+export async function deleteItem(id) {
+  return requestWithToken(`${baseUrl}/items/${id}`, "DELETE");
+}
+
+export async function likeClothingItem(itemId) {
+  return requestWithToken(`${baseUrl}/items/${itemId}/likes`, "PUT");
+}
+
+export async function dislikeClothingItem(itemId) {
+  return requestWithToken(`${baseUrl}/items/${itemId}/likes`, "DELETE");
+}
+
+async function requestWithToken(url, method, body = null) {
   const token = localStorage.getItem("jwt") ?? "";
-  return fetch(`${baseUrl}/users/me`, {
-    method: "PATCH",
+  const options = {
+    method: method,
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      name,
-      avatar,
-    }),
-  })
+  };
+  if (body) {
+    options["body"] = body;
+  }
+  return fetch(url, options)
     .then(checkResponse)
     .catch((e) => {
       return Promise.reject(e);
     });
 }
 
-export async function getItems() {
-  return fetch(`${baseUrl}/items`).then(checkResponse);
-}
-
-export async function addItem({ name, imageUrl, weather }) {
-  const token = localStorage.getItem("jwt") ?? "";
-  return fetch(`${baseUrl}/items`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
-
-    body: JSON.stringify({ name, imageUrl, weather }),
-  }).then(checkResponse);
-}
-
-export async function deleteItem(id) {
-  const token = localStorage.getItem("jwt") ?? "";
-  return fetch(`${baseUrl}/items/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
-  }).then(checkResponse);
-}
-
-export async function likeClothingItem(itemId) {
-  const token = localStorage.getItem("jwt") ?? "";
-  return fetch(`${baseUrl}/items/${itemId}/likes`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
-  }).then(checkResponse);
-}
-
-export async function dislikeClothingItem(itemId) {
-  const token = localStorage.getItem("jwt") ?? "";
-  return fetch(`${baseUrl}/items/${itemId}/likes`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
-  }).then(checkResponse);
+async function requestWithoutToken(url, method, body) {
+  return fetch(url, {
+    method: method,
+    headers: { "Content-Type": "application/json" },
+    body: body,
+  })
+    .then(checkResponse)
+    .catch((e) => {
+      return Promise.reject(e);
+    });
 }
 
 export function checkResponse(res) {

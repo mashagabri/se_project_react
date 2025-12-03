@@ -35,6 +35,7 @@ function ModalWithForm({
             </button>
             {additionalButton ? (
               <button
+                type="button"
                 className="additional_button"
                 onClick={clickAdditionalButton}
               >

@@ -3,7 +3,7 @@ import logo from "../../assets/logo.svg";
 import avatar from "../../assets/avatar.svg";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function Header({
@@ -30,6 +30,12 @@ function Header({
     }
     return "";
   });
+
+  useEffect(() => {
+    const currentUser = userContext.currentUser;
+    setUserName(currentUser ? currentUser.name : "");
+    setUserAvatar(currentUser ? currentUser.avatar : "");
+  }, [userContext]);
 
   const currentDate = new Date().toLocaleString("default", {
     month: "long",

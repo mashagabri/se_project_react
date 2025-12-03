@@ -20,7 +20,6 @@ function EditProfileModal({
   const currentUser = currentUserContext?.currentUser ?? {};
   useEffect(() => {
     if (currentUser) {
-      console.log(currentUser.name);
       setEditProfileName(currentUser.name);
       setEditProfileAvatar(currentUser.avatar);
     }
@@ -31,7 +30,6 @@ function EditProfileModal({
       currentUserContext.getData();
     });
   }
-
   return (
     <ModalWithForm
       title="Change profile data"
@@ -47,18 +45,16 @@ function EditProfileModal({
         Name *{""}
         <input
           onBlur={(e) => {
-            console.log(e.target.value);
             handleEditProfileName(e);
           }}
           onInput={(e) => {
-            console.log(e.target.value);
             handleEditProfileName(e);
           }}
           className="modal__input"
           name="name2"
           type="text"
           id="edit-profile-name"
-          value={editProfileName}
+          value={editProfileName ?? ""}
           required={true}
         ></input>
       </label>
@@ -73,7 +69,7 @@ function EditProfileModal({
           name="avatar2"
           type="url"
           id="edit-profile-avatar"
-          value={editProfileAvatar}
+          value={editProfileAvatar ?? ""}
           required={true}
         ></input>
       </label>

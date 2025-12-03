@@ -1,5 +1,7 @@
 import "./LoginModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useContext } from "react";
 
 function LoginModal({
   isOpen,
@@ -13,6 +15,18 @@ function LoginModal({
   clickAdditionalButton,
   errorMessage,
 }) {
+  const userContext = useContext(CurrentUserContext);
+
+  async function newHandler(e) {
+    await onSubmit(e)
+      .then(() => {
+        userContext.getData();
+      })
+      .catch(() => {
+        console.log("Error data");
+      });
+  }
+
   return (
     <ModalWithForm
       title="Log In"
@@ -20,7 +34,7 @@ function LoginModal({
       isOpen={isOpen}
       activeSendButton={activeSendButton}
       onClose={onClose}
-      onSubmit={onSubmit}
+      onSubmit={newHandler}
       additionalButton="or Sign Up"
       clickAdditionalButton={clickAdditionalButton}
       errorMessage={errorMessage}

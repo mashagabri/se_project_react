@@ -146,8 +146,8 @@ function App() {
 
   function handleAddNewItem(newItem) {
     addItem(newItem)
-      .then(() => {
-        setClothingItems([newItem, ...clothingItems]);
+      .then((createdItem) => {
+        setClothingItems((prev) => [createdItem, ...prev]);
         closeActiveModal();
         setInputName("");
         setInputImage("");

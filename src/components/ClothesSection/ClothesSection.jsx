@@ -1,7 +1,7 @@
 import ItemCard from "../ItemCard/ItemCard";
 import "./ClothesSection.css";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 
 function ClothesSection({
   clothingItems,
@@ -11,11 +11,18 @@ function ClothesSection({
 }) {
   const currentUserContext = useContext(CurrentUserContext);
   const currentUser = currentUserContext.currentUser ?? {};
+  const [filteredItems, setFilteredItems] = useState([]);
+  console.log(clothingItems);
+  useEffect(() => {
+    console.log("UseEffect");
+    setFilteredItems(
+      clothingItems.filter((item) => {
+        return currentUser._id === item.owner;
+      })
+    );
+  }, [clothingItems, currentUser]);
 
-  const filteredItems = clothingItems.filter((item) => {
-    return currentUser._id === item.owner;
-  });
-
+  console.log(filteredItems);
   return (
     <div className="clothes-section">
       <div className="clothes-section__header">
@@ -25,14 +32,17 @@ function ClothesSection({
         </button>
       </div>
       <ul className="clothes-section__cards">
-        {filteredItems.map((item) => (
-          <ItemCard
-            key={item._id}
-            item={item}
-            handleCardClick={handleCardClick}
-            handleLikeClick={handleLikeClick}
-          />
-        ))}
+        {filteredItems.map((item) => {
+          console.log(item);
+          return (
+            <ItemCard
+              key={item._id}
+              item={item}
+              handleCardClick={handleCardClick}
+              handleLikeClick={handleLikeClick}
+            />
+          );
+        })}
       </ul>
     </div>
   );

@@ -9,7 +9,10 @@ function ItemCard({ item, handleCardClick, handleLikeClick }) {
   const isLoggedInContext = useContext(CurrentUserContext).loggedIn;
 
   const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInContext);
-  const isLiked = item.likes.some((_id) => _id === currentUser._id);
+  console.log(item);
+
+  const isLiked = item.likes?.some((_id) => _id === currentUser._id) ?? false;
+
   useEffect(() => {
     setIsLoggedIn(isLoggedInContext);
   }, [isLoggedInContext]);

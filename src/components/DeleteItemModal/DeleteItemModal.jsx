@@ -23,7 +23,9 @@ function DeleteItemModal({ onClose, isOpen, handleDeleteItem, itemId }) {
             </form>
           </div>
           <div className="modal__cancel">
-            <button className="modal__button button">Cancel</button>
+            <button className="modal__button button" onClick={onClose}>
+              Cancel
+            </button>
           </div>
         </div>
       </div>

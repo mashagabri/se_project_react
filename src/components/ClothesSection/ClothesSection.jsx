@@ -12,9 +12,7 @@ function ClothesSection({
   const currentUserContext = useContext(CurrentUserContext);
   const currentUser = currentUserContext.currentUser ?? {};
   const [filteredItems, setFilteredItems] = useState([]);
-  console.log(clothingItems);
   useEffect(() => {
-    console.log("UseEffect");
     setFilteredItems(
       clothingItems.filter((item) => {
         return currentUser._id === item.owner;
@@ -22,7 +20,6 @@ function ClothesSection({
     );
   }, [clothingItems, currentUser]);
 
-  console.log(filteredItems);
   return (
     <div className="clothes-section">
       <div className="clothes-section__header">
@@ -33,7 +30,6 @@ function ClothesSection({
       </div>
       <ul className="clothes-section__cards">
         {filteredItems.map((item) => {
-          console.log(item);
           return (
             <ItemCard
               key={item._id}

@@ -23,7 +23,7 @@ function EditProfileModal({
       setEditProfileName(currentUser.name);
       setEditProfileAvatar(currentUser.avatar);
     }
-  }, []);
+  }, [currentUser]);
 
   async function onSubmitWithCheck(e) {
     await onSubmit(e).then(() => {

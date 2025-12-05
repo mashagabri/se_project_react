@@ -151,7 +151,7 @@ function App() {
         closeActiveModal();
         setInputName("");
         setInputImage("");
-        setSelectWeatherType("hot");
+        setSelectWeatherType("");
       })
       .catch((err) => {
         console.log(err);

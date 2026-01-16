@@ -343,8 +343,16 @@ function App() {
         closeActiveModal();
         Promise.resolve();
       })
-      .catch((err) => {
+      .catch(async function (err) {
         console.log(err);
+        const res = await err.json();
+        console.log(res);
+
+        console.log(err.message);
+        console.log(err.body);
+        console.log(err.response);
+
+        // TODO catch errors from celebrate (min2)
         if (err.status === 400) {
           setErrorMessageEditProfile("Invalid data");
         } else if (err.status === 404) {

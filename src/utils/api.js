@@ -1,5 +1,9 @@
 // backend url
-const baseUrl = "http://localhost:3001";
+
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://api.mariazackwtwr.jumpingcrab.com"
+    : "http://localhost:3001";
 
 export async function signup({ name, email, avatar, password }) {
   return requestWithoutToken(

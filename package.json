@@ -1,6 +1,6 @@
 {
   "name": "se_project_react",
-  "homepage": "https://mashagabri.github.io/se_project_react/",
+  "homepage": "https://mariazackwtwr.jumpingcrab.com",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,8 +10,8 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "jsondb": "json-server --watch db.json --id _id --port 3001"
+    "jsondb": "json-server --watch db.json --id _id --port 3001",
+    "deploy": "npm run build && scp -r ./dist/* eltima788@mariazackwtwr.jumpingcrab.com:/home/eltima788/frontend"
   },
   "dependencies": {
     "react": "^18.3.1",

@@ -16,7 +16,8 @@ export const CurrentUserProvider = ({ children }) => {
           setCurrentUser(data);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          localStorage.removeItem("jwt");
           setLoggedIn(false);
           setCurrentUser(null);
         })

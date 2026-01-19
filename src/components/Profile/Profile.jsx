@@ -14,7 +14,8 @@ function Profile({
   const currentUserContext = useContext(CurrentUserContext);
   const loggedIn = currentUserContext.loggedIn;
   if (!loggedIn) {
-    window.location.href = "http://localhost:3000/";
+    // window.location.href = "https://www.mariazackwtwr.jumpingcrab.com/";
+    window.location.href = window.location.origin;
   }
   return (
     <section className="profile">

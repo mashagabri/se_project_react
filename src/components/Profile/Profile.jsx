@@ -14,8 +14,8 @@ function Profile({
   const currentUserContext = useContext(CurrentUserContext);
   const loggedIn = currentUserContext.loggedIn;
   if (!loggedIn) {
-    // window.location.href = "https://www.mariazackwtwr.jumpingcrab.com/";
-    window.location.href = window.location.origin;
+    window.location.href = "https://www.mariazackwtwr.jumpingcrab.com/";
+    // window.location.href = window.location.origin;
   }
   return (
     <section className="profile">
